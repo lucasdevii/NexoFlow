@@ -1,0 +1,42 @@
+
+services:
+  frontend:
+    build: ./frontend
+    container_name: nexoflow-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: nexoflow-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/var/www
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: postgres:17
+    container_name: nexoflow-postgres
+    environment:
+      POSTGRES_DB: nexoflow
+      POSTGRES_USER: nexoflow
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: nexoflow-redis
+
+volumes:
+  postgres_data:
