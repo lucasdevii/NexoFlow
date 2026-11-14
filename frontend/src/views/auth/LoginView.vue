@@ -207,6 +207,8 @@ async function handleLogin() {
   overflow: hidden;
   min-height: 100vh;
   padding: 48px 9%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
   background:
     radial-gradient(ellipse at 80% 75%, #253d73 0%, transparent 45%),
     linear-gradient(145deg, #10182c, #111e38 60%, #172746);
@@ -216,9 +218,9 @@ async function handleLogin() {
 .brand-content {
   position: relative;
   z-index: 1;
-  min-height: calc(100vh - 130px);
-  display: flex;
-  flex-direction: column;
+  min-height: calc(100vh - 96px);
+  display: grid;
+  grid-template-rows: auto 1fr;
 }
 
 .brand {
@@ -247,9 +249,9 @@ async function handleLogin() {
 }
 
 .hero {
-  margin-top: auto;
-  margin-bottom: 30vh;
+  align-self: center;
   max-width: 500px;
+  margin: 0;
 }
 
 .eyebrow,
@@ -304,6 +306,8 @@ async function handleLogin() {
 }
 
 .panel-footer {
+  position: relative;
+  z-index: 1;
   display: flex;
   justify-content: space-between;
   color: #72809b;
