@@ -3,14 +3,28 @@ import { ref } from 'vue'
 
 import '@/assets/styles/components/buttons.css'
 
+import type UserModel from '@/types/userType'
+import { userLogin } from '@/services/user/auth/authService'
+
+
 const email = ref('')
 const password = ref('')
 const rememberMe = ref(false)
 const showPassword = ref(false)
 
-function handleLogin() {
-  // Aqui será integrada a autenticação com a API Laravel.
-  console.log('Integração de autenticação pendente')
+async function handleLogin() {
+  
+  const infos : UserModel = {
+    email: email.value,
+    password: password.value
+  }
+
+  try{
+    const response = userLogin(infos)
+    console.log(response)
+  }catch(error){
+    console.log("Erro ao fazer login.")
+  }
 }
 </script>
 
