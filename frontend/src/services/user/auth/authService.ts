@@ -1,4 +1,4 @@
-import API from '../../api'
+import API from '@/services/api'
 import asyncWrapper from '@/services/asyncWrapper'
 import type userModel from '@/types/userType'
 
