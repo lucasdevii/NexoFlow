@@ -5,24 +5,42 @@ import '@/assets/styles/components/buttons.css'
 
 import type UserModel from '@/types/userType'
 import { userLogin } from '@/services/user/auth/authService'
-
+import { validator } from '@/utils/auth/authValidation'
 
 const email = ref('')
 const password = ref('')
 const rememberMe = ref(false)
 const showPassword = ref(false)
 
+const emailError = ref('')
+const passwordError = ref('')
+
+
 async function handleLogin() {
-  
   const infos : UserModel = {
     email: email.value,
     password: password.value
   }
 
+  const validate = validator(infos.email, infos.password)
+  
+  if(!validate.success){
+    validate.email[0]? 
+      emailError.value = validate.email[0] : 
+      emailError.value = ''
+  
+    validate.password[0]? 
+      passwordError.value = validate.password[0] : 
+      passwordError.value = ''
+     
+    return
+  }
+
   try{
-    const response = userLogin(infos)
+    const response = await userLogin(infos)
     console.log(response)
-  }catch(error){
+  } 
+  catch(error){
     console.log("Erro ao fazer login.")
   }
 }
@@ -110,6 +128,9 @@ async function handleLogin() {
                 required
               />
             </div>
+
+            <span class="error-text">{{ emailError }}</span>
+
           </div>
 
           <div class="field">
@@ -144,6 +165,9 @@ async function handleLogin() {
                 {{ showPassword ? 'Ocultar' : 'Mostrar' }}
               </button>
             </div>
+
+            <span class="error-text">{{ passwordError }}</span>
+
           </div>
 
           <label class="remember">
@@ -191,8 +215,23 @@ async function handleLogin() {
   box-sizing: border-box;
 }
 
+.error-text {
+  color: #e53e3e; /* Um vermelho mais moderno */
+  font-size: 11px;
+  font-weight: 500;
+  display: block;
+  height: 16px;      /* Reserva o espaço exato de uma linha de texto */
+  margin-top: 6px;   /* Pequeno respiro acima do erro */
+  visibility: hidden; /* Fica invisível por padrão, mas ocupa espaço */
+}
+
+/* Quando houver texto dentro, ele se torna visível */
+.error-text:not(:empty) {
+  visibility: visible;
+}
+
 .login-page {
-  min-height: 100vh;
+  height: 100vh;
   display: grid;
   grid-template-columns: 1fr 1fr;
   font-family: 'DM Sans', sans-serif;
@@ -483,7 +522,6 @@ async function handleLogin() {
 }
 
 .signup {
-  margin-top: 48px;
   text-align: center;
   font-size: 12px;
   color: #929aaa;
@@ -523,7 +561,9 @@ async function handleLogin() {
 @media (max-width: 650px) {
   .login-page {
     display: block;
+    height: auto;
     min-height: 100vh;
+    overflow: visible;
   }
 
   .brand-panel {
