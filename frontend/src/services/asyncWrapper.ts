@@ -1,32 +1,45 @@
 import api from './api';
 
-function asyncWrapper<T>(method: 'GET', route: string): Promise<{ error: any; data: T | null }>;
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-function asyncWrapper<T>(method: 'POST' | 'PUT', route: string, data: object): Promise<{ error: any; data: T | null }>;
-
-async function asyncWrapper<T>(method: 'GET' | 'POST' | 'PUT', route: string, data?: object) {
+async function asyncWrapper<T>(
+    method: HttpMethod,
+    route: string,
+    data?: object
+): Promise<{ error: unknown; data: T | null }> {
     try {
         let response;
 
-        if (method === 'GET') 
-            response = await api.get(route);
+        switch (method) {
+            case 'GET':
+                response = await api.get<T>(route);
+                break;
 
-        else if (method === 'POST') 
-            response = await api.post(route, data);
+            case 'POST':
+                response = await api.post<T>(route, data);
+                break;
 
-        else if (method === 'PUT') 
-            response = await api.put(route, data);
-        
-        else if (method == 'DELETE') 
-            response = await api.put(route, data);
-        
+            case 'PUT':
+                response = await api.put<T>(route, data);
+                break;
 
-        return { error: null, data: response?.data };
-        
+            case 'DELETE':
+                response = await api.delete<T>(route);
+                break;
+        }
+
+        return {
+            error: null,
+            data: response.data
+        };
+
     } catch (error) {
-        console.log(`Erro de requisição (${method}): `, error);
+        console.error(`Erro de requisição (${method}):`, error);
 
-        return { error, data: null };
+        return {
+            error,
+            data: null
+        };
     }
 }
 

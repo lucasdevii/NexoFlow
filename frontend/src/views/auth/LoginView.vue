@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 import '@/assets/styles/components/buttons.css'
 
@@ -14,6 +14,13 @@ const showPassword = ref(false)
 
 const emailError = ref('')
 const passwordError = ref('')
+
+
+onMounted(async () => {
+  const response = await userLogin({email: "lucasblabla", password: "shasha"});
+
+  console.log(response);
+})
 
 
 async function handleLogin() {
