@@ -10,6 +10,7 @@ export const validator = (
     password: string, 
     password_confirmation?: string
 ): AuthErrors => {
+    console.log("asdasda")
     const errors : AuthErrors = 
     {
         success: true,

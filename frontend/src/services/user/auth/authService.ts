@@ -1,4 +1,3 @@
-import api from '@/services/api'
 import http from '@/services/asyncWrapper'
 import type userModel from '@/types/userType'
 
