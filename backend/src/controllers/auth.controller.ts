@@ -2,21 +2,21 @@ import { Request, Response, NextFunction } from "express"
 import { AppError } from "../middlewares/error.middleware";
 
 interface CadasterRequest {
-    email: String,
-    password: String
+    email: string,
+    password: string
 }
 
 interface LoginRequest {
-    email: String,
-    password: String
+    email: string,
+    password: string
 }
 
 interface ErrorsAuth {
-    emailErrors: String,
-    passwordErrors: String
+    emailErrors: string,
+    passwordErrors: string
 }
 
-const cadaster = (req: Request<{}, {}, CadasterRequest>, res: Response, next: NextFunction) => {
+export const cadaster = (req: Request<{}, {}, CadasterRequest>, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
 
     const errors: ErrorsAuth = {
@@ -42,7 +42,7 @@ const cadaster = (req: Request<{}, {}, CadasterRequest>, res: Response, next: Ne
     return res.status(200).json({message: 'Usuário criado com sucesso.', errors: errors})
 };   
 
-const login = (req: Request<{}, {}, CadasterRequest>, res: Response, next: NextFunction) => {
+export const login = (req: Request<{}, {}, LoginRequest>, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
 
     const errors: ErrorsAuth = {

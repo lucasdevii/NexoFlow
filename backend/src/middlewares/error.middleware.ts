@@ -14,13 +14,14 @@ export class AppError extends Error {
 }
 
 const errorHandler = (error: Error, req: Request, res: Response, next: NextFunction) => {
-    if(error instanceof AppError){
-        return res.status(error.statusCode).json({message: error.message, errors: error.errors || null})
-    }
+  if(error instanceof AppError){
+      return res.status(error.statusCode).json({message: error.message, errors: error.errors || null})
+  }
 
-    return res.status(500).json({
-        message: "Erro interno no servidor.", errors: null
-    })
+  return res.status(500).json({
+      message: "Erro interno no servidor.", 
+      errors: error
+  })
 }
 
 export default errorHandler;
