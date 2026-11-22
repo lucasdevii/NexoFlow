@@ -29,11 +29,13 @@ services:
 
   postgres:
     image: postgres:17
-    container_name: nexoflow-postgres
+    container_name: nexoflow-db
     environment:
-      POSTGRES_DB: nexoflow
-      POSTGRES_USER: nexoflow
+      POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "${DB_PORT}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
