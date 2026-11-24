@@ -24,8 +24,9 @@ services:
       - postgres
       - redis
     environment:
-      - NODE_ENV=development
-      - PORT=8000
+      NODE_ENV: development
+      PORT: 8000
+      DATABASE_URL: ${DATABASE_URL}
 
   postgres:
     image: postgres:17
