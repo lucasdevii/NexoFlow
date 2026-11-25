@@ -1,23 +1,12 @@
 import { Request, Response, NextFunction } from "express"
 import { AppError } from "../middlewares/error.middleware";
+import { createUser } from "../services/user.service";
+import { CadasterRequest, ErrorsAuth, LoginRequest, UserType } from "../types/user.types";
 
-interface CadasterRequest {
-    email: string,
-    password: string
-}
 
-interface LoginRequest {
-    email: string,
-    password: string
-}
 
-interface ErrorsAuth {
-    emailErrors: string,
-    passwordErrors: string
-}
-
-export const cadaster = (req: Request<{}, {}, CadasterRequest>, res: Response, next: NextFunction) => {
-    const { email, password } = req.body;
+export const cadaster = async (req: Request<{}, {}, CadasterRequest>, res: Response) => {
+    const data: CadasterRequest = req.body;
 
     const errors: ErrorsAuth = {
         emailErrors: '',
@@ -25,11 +14,11 @@ export const cadaster = (req: Request<{}, {}, CadasterRequest>, res: Response, n
     };
 
     // Exemplo de validação
-    if (!email || !email.includes('@')) {
+    if (!data.email || !data.email.includes('@')) {
         errors.emailErrors = 'E-mail inválido.';
     }
 
-    if (!password || password.length < 8 || password.length > 20) {
+    if (!data.password || data.password.length < 8 || data.password.length > 20) {
         errors.passwordErrors = 'Senha deve ter entre 8 e 20 caractéres.';
     }
 
@@ -37,9 +26,11 @@ export const cadaster = (req: Request<{}, {}, CadasterRequest>, res: Response, n
         throw new AppError('Dados inválidos.', 400, errors);
     }
 
-    //SERVICE DE CRIAÇÃO...
+    const userData: UserType = { email: data.email, password: data.password };
 
-    return res.status(200).json({message: 'Usuário criado com sucesso.', errors: errors})
+    await createUser(userData);
+
+    return res.status(201).json({message: 'Usuário criado com sucesso.', errors: null})
 };   
 
 export const login = (req: Request<{}, {}, LoginRequest>, res: Response, next: NextFunction) => {
