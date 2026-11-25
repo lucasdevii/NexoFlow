@@ -2,9 +2,9 @@ import { Request, Response, NextFunction } from "express";
 
 export class AppError extends Error {
   statusCode: number
-  errors: object | undefined
+  errors: object | string | undefined
 
-  constructor(message: string, statusCode: number = 500, errors?: object) {
+  constructor(message: string, statusCode: number = 500, errors?: object | string) {
     super(message)
 
     this.statusCode = statusCode
